@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# homeSec kitchen light3 v1.01
+# homeSec kitchen light4 v1.02
 #
 
 # import libraries
@@ -19,7 +19,7 @@ GPIO.setup(12, GPIO.OUT)  # set up Pin 12
 def on_connect(mqtt_kthn, userdata, flags, rc):
     print ("Subscriber Connection status code: " + str(rc) + " | Connection status: successful")
     mqtt_kthn.subscribe("$aws/things/Light4/shadow/update/accepted", qos=0)
-    # mqtt_kthn.subscribe("$aws/things/Light3/shadow/update/delta",qos=0)
+    # mqtt_kthn.subscribe("$aws/things/Light4/shadow/update/delta",qos=0)
 
 
 # called when a message is received by a topic
@@ -71,5 +71,9 @@ mqtt_kthn.tls_set(ca_certs="/home/pi/HomeSecDevice/root-CA.crt",
 # connect to aws-account-specific-iot-endpoint
 mqtt_kthn.connect("AH5PU35LC0GJH.iot.eu-west-1.amazonaws.com", port=8883)  # AWS IoT service hostname and portno
 
-# automatic reconnect
-mqtt_kthn.loop_forever()
+try:
+	# automatic reconnect
+	mqtt_kthn.loop_forever()
+finally:
+	print("Cleaning up")
+GPIO.Cleanup()

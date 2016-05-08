@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# homeSec kitchen light4 v1.02
+# homeSec kitchen light4 v1.03
 #
 
 # import libraries
@@ -55,6 +55,7 @@ def on_message(mqtt_kthn, userdata, msg):
         except:
             print("Error: message not recognised")
 
+
 # creating a client
 mqtt_kthn = mqtt.Client()
 mqtt_kthn.on_connect = on_connect
@@ -72,8 +73,8 @@ mqtt_kthn.tls_set(ca_certs="/home/pi/HomeSecDevice/root-CA.crt",
 mqtt_kthn.connect("AH5PU35LC0GJH.iot.eu-west-1.amazonaws.com", port=8883)  # AWS IoT service hostname and portno
 
 try:
-	# automatic reconnect
-	mqtt_kthn.loop_forever()
+    # automatic reconnect
+    mqtt_kthn.loop_forever()
 finally:
-	print("Cleaning up")
+    print("Cleaning up")
 GPIO.Cleanup()

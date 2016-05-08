@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# homeSec alarm_reset v1.04
+# homeSec alarm_reset v1.05
 #
 
 # import libraries
@@ -61,17 +61,17 @@ mqtt_alrm.on_message = on_message
 # Configure network encryption and authentication options. Enables SSL/TLS support.
 # adding client-side certificates and enabling tlsv1.2 support as required by aws-iot service
 mqtt_alrm.tls_set(ca_certs="/home/pi/HomeSecDevice/root-CA.crt",
-                certfile="/home/pi/HomeSecDevice/92951bb681-certificate.pem.crt",
-                keyfile="/home/pi/HomeSecDevice/92951bb681-private.pem.key",
-                tls_version=ssl.PROTOCOL_TLSv1_2,
-                ciphers=None)
+                  certfile="/home/pi/HomeSecDevice/92951bb681-certificate.pem.crt",
+                  keyfile="/home/pi/HomeSecDevice/92951bb681-private.pem.key",
+                  tls_version=ssl.PROTOCOL_TLSv1_2,
+                  ciphers=None)
 
 # connect to aws-account-specific-iot-endpoint
 mqtt_alrm.connect("AH5PU35LC0GJH.iot.eu-west-1.amazonaws.com", port=8883)  # AWS IoT service hostname and portno
 
 try:
-	# automatic reconnect
-	mqtt_alrm.loop_forever()
+    # automatic reconnect
+    mqtt_alrm.loop_forever()
 finally:
-	print("Cleaning up")
+    print("Cleaning up")
 GPIO.Cleanup()

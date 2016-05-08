@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# homeSec camera v1.11
+# homeSec camera v1.12
 #
 
 # import libraries
@@ -101,8 +101,8 @@ mqtt_cm.tls_set(ca_certs="/home/pi/HomeSecDevice/root-CA.crt",
 # connect to aws-account-specific-iot-endpoint
 mqtt_cm.connect("AH5PU35LC0GJH.iot.eu-west-1.amazonaws.com", port=8883)  # AWS IoT service hostname and portno
 try:
-	# automatic reconnect
-	mqtt_cm.loop_forever()
+    # automatic reconnect
+    mqtt_cm.loop_forever()
 finally:
-	print("Cleaning up")
+    print("Cleaning up")
 GPIO.Cleanup()

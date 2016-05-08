@@ -1,4 +1,4 @@
 # project3
 DNET_yr3_project
 
-code repository 
+Raspberry Pi code repository 

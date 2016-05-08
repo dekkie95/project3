@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# homeSec alarm_reset v1.03
+# homeSec alarm_reset v1.04
 #
 
 # import libraries
@@ -19,14 +19,14 @@ GPIO.setup(22, GPIO.OUT)  # set up Pin 22
 
 
 # establish connection with the server
-def on_connect(mqtt_up, userdata, flags, rc):
+def on_connect(mqtt_alrm, userdata, flags, rc):
     print ("Subscriber Connection status code: " + str(rc) + " | Connection status: successful")
-    mqtt_up.subscribe("$aws/things/Alarm/shadow/update/accepted", qos=0)
-    # mqtt_up.subscribe("$aws/things/Alarm/shadow/update/delta",qos=0)
+    mqtt_alrm.subscribe("$aws/things/Alarm/shadow/update/accepted", qos=0)
+    # mqtt_alrm.subscribe("$aws/things/Alarm/shadow/update/delta",qos=0)
 
 
 # called when a message is received by a topic
-def on_message(mqtt_up, userdata, msg):
+def on_message(mqtt_alrm, userdata, msg):
     while True:
         try:
             message_json = json.loads(str(msg.payload))
@@ -54,20 +54,24 @@ def on_message(mqtt_up, userdata, msg):
 
 
 # create client
-mqtt_up = mqtt.Client()
-mqtt_up.on_connect = on_connect
-mqtt_up.on_message = on_message
+mqtt_alrm = mqtt.Client()
+mqtt_alrm.on_connect = on_connect
+mqtt_alrm.on_message = on_message
 
 # Configure network encryption and authentication options. Enables SSL/TLS support.
 # adding client-side certificates and enabling tlsv1.2 support as required by aws-iot service
-mqtt_up.tls_set(ca_certs="/home/pi/HomeSecDevice/root-CA.crt",
+mqtt_alrm.tls_set(ca_certs="/home/pi/HomeSecDevice/root-CA.crt",
                 certfile="/home/pi/HomeSecDevice/92951bb681-certificate.pem.crt",
                 keyfile="/home/pi/HomeSecDevice/92951bb681-private.pem.key",
                 tls_version=ssl.PROTOCOL_TLSv1_2,
                 ciphers=None)
 
 # connect to aws-account-specific-iot-endpoint
-mqtt_up.connect("AH5PU35LC0GJH.iot.eu-west-1.amazonaws.com", port=8883)  # AWS IoT service hostname and portno
+mqtt_alrm.connect("AH5PU35LC0GJH.iot.eu-west-1.amazonaws.com", port=8883)  # AWS IoT service hostname and portno
 
-# automatic reconnect
-mqtt_up.loop_forever()
+try:
+	# automatic reconnect
+	mqtt_alrm.loop_forever()
+finally:
+	print("Cleaning up")
+GPIO.Cleanup()
